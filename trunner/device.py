@@ -15,7 +15,7 @@ try:
 except ImportError:
     pass
 
-from .config import PHRTOS_PROJECT_DIR, DEVICE_SERIAL
+from .config import PHRTOS_PROJECT_DIR, DEVICE_SERIAL, rootfs
 from .tools.color import Color
 
 
@@ -371,7 +371,7 @@ class IMXRT106xRunner(DeviceRunner):
         """Loads test ELF into syspage using plo"""
 
         phd = None
-        load_dir = 'test/armv7m7-imxrt106x'
+        load_dir = str(rootfs(test.target) / 'bin')
         try:
             with PloTalker(self.port) as plo:
                 self.boot()
@@ -430,7 +430,7 @@ class HostRunner(Runner):
         if test.skipped():
             return
 
-        test_path = PHRTOS_PROJECT_DIR / f'_boot/{test.target}/{test.exec_bin}'
+        test_path = rootfs(test.target) / 'bin' / test.exec_bin
 
         try:
             proc = pexpect.spawn(str(test_path), encoding='utf-8', timeout=test.timeout)

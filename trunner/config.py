@@ -1,12 +1,12 @@
 import logging
 import os
-import pathlib
+from pathlib import Path
 
 import yaml
 
 from .tools.text import remove_prefix
 
-PHRTOS_PROJECT_DIR = pathlib.Path(os.getcwd())
+PHRTOS_PROJECT_DIR = Path(os.getcwd())
 PHRTOS_TEST_DIR = PHRTOS_PROJECT_DIR / 'phoenix-rtos-tests'
 
 # Default time after pexpect will raise TIEMOUT exception if nothing matches an expected pattern
@@ -23,6 +23,10 @@ DEVICE_TARGETS = ['armv7m7-imxrt106x']
 
 # Port to communicate with hardware board
 DEVICE_SERIAL = "/dev/ttyACM0"
+
+
+def rootfs(target: str) -> Path:
+    return PHRTOS_PROJECT_DIR / '_fs' / target / 'root'
 
 
 class YAMLParserError(Exception):
